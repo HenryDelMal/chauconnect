@@ -31,7 +31,7 @@ def sendtx():
     msg, fee = sendTx(form['sender_addr'], form['sender_privkey'], float(form['amount']), form['receptor'], 'casino.cuy.cl')
     return_query = {'msg': msg,
                     'fee': fee,
-                    'final_amount': float(form['amount']) - fee
+                    'final_amount': round(float(form['amount']) - fee,8)
     }
     return jsonify(return_query)
 

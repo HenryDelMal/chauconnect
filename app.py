@@ -28,7 +28,12 @@ def new_wallet():
 @app.route('/sendtx', methods=['POST'])
 def sendtx():
     form = request.form
-    return sendTx(form['sender_addr'], form['sender_privkey'], int(form['amount']), form['receptor'], 'casino.cuy.cl')
+    msg, fee = sendTx(form['sender_addr'], form['sender_privkey'], float(form['amount']), form['receptor'], 'casino.cuy.cl')
+    return_query = {'msg': msg,
+                    'fee': fee,
+                    'final_amount': float(form['amount']) - fee
+    }
+    return jsonify(return_query)
 
 @app.route('/balance', methods=['GET','POST'])
 def balance():

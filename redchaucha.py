@@ -58,13 +58,13 @@ def sendTx(sender_addr, sender_privkey, amount, receptor, op_return=''):
     confirmed_balance, inputs, unconfirmed = getbalance(addr)
 
     if not len(receptor) == 34 and receptor[0] == 'c':
-        return "Dirección inválida"
+        return "Dirección inválida", 0
 
     elif amount > confirmed_balance:
-        return "Balance insuficiente"
+        return "Balance insuficiente", 0
 
     elif amount <= 0:
-        return "Monto inválido"
+        return "Monto inválido", 0
 
     # Transformar valores a Chatoshis
     used_amount = int(amount*COIN)
@@ -116,4 +116,4 @@ def sendTx(sender_addr, sender_privkey, amount, receptor, op_return=''):
     except:
         msg = broadcasting.text
 
-    return msg
+    return msg, fee

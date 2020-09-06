@@ -88,10 +88,6 @@ def sendTx(sender_addr, sender_privkey, amount, receptor, op_return=''):
     fee = int((size/1024)*0.01*COIN) 
     fee = 1e7 if fee > 1e7 else fee
 
-    print(used_balance)
-    print(amount)
-    print(fee)
-
     if used_balance == used_amount:
         outputs[0] = {'address': receptor, 'value': used_amount - fee}
         tx = mktx(used_inputs, outputs)
@@ -108,4 +104,4 @@ def sendTx(sender_addr, sender_privkey, amount, receptor, op_return=''):
     except:
         msg = broadcasting.text
 
-    return msg, fee
+    return msg, (fee/COIN)

@@ -5,7 +5,7 @@ fee_per_input = 0.000296
 max_fee = 10000000
 COIN = 100000000
 ADDRESS_PREFIX = magic
-INSIGHT = 'http://insight.chaucha.cl'
+INSIGHT = 'https://explorer.cha.terahash.cl'
 
 # Opcodes
 OP_CHECKLOCKTIMEVERIFY = 'b1'

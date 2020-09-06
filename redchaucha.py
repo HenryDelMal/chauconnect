@@ -19,37 +19,25 @@ def OP_RETURN_payload(string):
 
     return payload
 
-def getbalance(addr, sendamount=0):
-    # Captura de balance por tx sin gastar
-    url = INSIGHT + '/api/addr/'
-    try:
-        unspent = get(url + addr + '/utxo').json()
-    except:
-        return False
+def getbalance(addr):
+    unspent = get(INSIGHT + '/api/addr/' + addr + '/utxo').json()
 
-    # Variables auxiliares
+    confirmed = unconfirmed = 0
+
     inputs = []
-    confirmed = unconfirmed = unspent_balance = 0
-
     for i in unspent:
-        if i['confirmations'] >= 6:
+        if i['confirmations'] >= 1 and i['amount'] >= 0.001:
             confirmed += i['amount']
+            inputs_tx = {
+                'output': i['txid'] + ':' + str(i['vout']),
+                'value': i['satoshis'],
+                'address': i['address']}
 
-            if sendamount > 0:
-                unspent_balance += i['amount']
-                inputs_tx = {'output': i['txid'] + ':' + str(i['vout']),
-                             'value': i['satoshis'],
-                             'address': i['address']}
-
-                inputs.append(inputs_tx)
-                if unspent_balance >= int(sendamount):
-                    break
+            inputs.append(inputs_tx)
         else:
             unconfirmed += i['amount']
-    if sendamount > 0:
-        return {'used': round(unspent_balance, 8), 'inputs': inputs}
-    else:
-        return [confirmed, inputs, unconfirmed]
+
+    return [confirmed, inputs, unconfirmed]
 
 
 def sendTx(sender_addr, sender_privkey, amount, receptor, op_return=''):
